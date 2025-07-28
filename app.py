@@ -81,24 +81,25 @@ if st.button("Compare Prompts"):
         st.warning("Please enter both prompts.")
     else:
         with st.spinner("Comparing..."):
-            result = compare_prompts(prompt1, prompt2)
+            try:
+                result = compare_prompts(prompt1, prompt2)
+                data = json.loads(result)
 
-try:
-    if isinstance(result, str):
-        data = json.loads(result)  # Try parsing as JSON
-        st.success(f"🏆 Better Prompt: **Prompt {data['better_prompt']}**")
-        st.markdown(f"### 🤖 Reason")
-        st.write(data["justification"])
-    elif isinstance(result, dict):
-        st.success(f"🏆 Better Prompt: **Prompt {result['better_prompt']}**")
-        st.markdown("### 🤖 Reason")
-        st.write(result["justification"])
-    else:
-        st.info("📝 Comparison Result")
-        st.write(result)
-except Exception:
-    st.info("📝 Comparison Result (Text Only)")
-    st.write(result)
+                st.success(f"🏆 Better Prompt: **{data['better_prompt'].capitalize()}**")
+                st.write("### 🤖 Reason")
+                st.write(data["reason"])
+                st.write("### ✍️ Suggestions")
+                st.write(data["suggestions"])
+
+                for label in ["prompt1", "prompt2"]:
+                    st.write(f"### 📊 {label.capitalize()} Scores")
+                    for k, v in data[label].items():
+                        st.write(f"{k.capitalize()}: {v}")
+
+            except Exception as e:
+                st.error("Could not parse response.")
+                st.code(str(e))  # ✅ Fix here!
+
 
 
         
