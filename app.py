@@ -56,8 +56,7 @@ if st.button("Check Quality"):
 
         except Exception as e:
             st.error("Couldn't parse the response. Here's the raw reply:")
-            st.code(result)
-            st.exception(e)
+            st.code(str(e))
 
 if st.button("🔧 Auto-Improve This Prompt"):
     if not prompt.strip():
