@@ -2,10 +2,10 @@ import requests
 import os
 import json
 import re
-from dotenv import load_dotenv
+import streamlit as st
 
-load_dotenv()
-API_KEY = "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"
+API_KEY = st.secrets["API_KEY"]
+
 
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
